@@ -6,23 +6,23 @@ const OverallStatSchema = new mongoose.Schema(
     yearlySalesTotal: Number,
     yearlyTotalSoldUnit: Number,
     monthlyData: [
-        {
-            month: String,
-            totalSales: Number,
-            totalUnits: Number
-        }
+      {
+        month: String,
+        totalSales: Number,
+        totalUnits: Number,
+      },
     ],
     dailyData: [
-        {
-            date: String,
-            totalSales: Number,
-            totalUnits: Number
-        }
+      {
+        date: String,
+        totalSales: Number,
+        totalUnits: Number,
+      },
     ],
     salesByCategory: {
-        type: Map,
-        of: Number
-    }
+      type: Map,
+      of: Number,
+    },
   },
   { timestamps: true }
 );
