@@ -5,6 +5,7 @@ const OverallStatSchema = new mongoose.Schema(
     totalCustomers: Number,
     yearlySalesTotal: Number,
     yearlyTotalSoldUnit: Number,
+    year: Number,
     monthlyData: [
       {
         month: String,
