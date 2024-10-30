@@ -2,16 +2,16 @@ import mongoose, { Mongoose } from "mongoose";
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 
-export const getAdmins = async (req, res) => {
+export const getAdmins = async (req, res, next) => {
   try {
     const admin = await User.find({ role: "admin" }).select("-password");
     res.status(200).json(admin);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getUserPerformance = async (req, res) => {
+export const getUserPerformance = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userWithStats = await User.aggregate([
@@ -43,6 +43,6 @@ export const getUserPerformance = async (req, res) => {
       .status(200)
       .json({ user: userWithStats[0], sales: filteredSaleTransactions });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
