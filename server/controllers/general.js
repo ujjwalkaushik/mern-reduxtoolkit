@@ -2,18 +2,18 @@ import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 import OverallStat from "../models/OverallStat.js";
 
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getDashboardStats = async (req, res) => {
+export const getDashboardStats = async (req, res, next) => {
   try {
     const currentMonth = "November";
     const currentYear = 2021;
@@ -54,6 +54,6 @@ export const getDashboardStats = async (req, res) => {
       transactions,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };

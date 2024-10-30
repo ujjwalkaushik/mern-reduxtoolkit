@@ -14,6 +14,7 @@ import salesRoutes from "./routes/sales.js";
 import logger from "./utils/logger.js";
 
 import requestLogger from "./middleware/requestLogger.js";
+import errorHandler from './middleware/errorHandler.js';
 
 /* Data Imports */
 import User from "./models/User.js";
@@ -49,6 +50,9 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+
+// Error handling middleware (must be last)
+app.use(errorHandler);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;

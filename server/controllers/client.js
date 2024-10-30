@@ -5,7 +5,7 @@ import Transaction from "../models/Transaction.js";
 
 import getCountryIso3 from "country-iso-2-to-3";
 
-export const getProducts = async (req, res) => {
+export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
 
@@ -23,20 +23,20 @@ export const getProducts = async (req, res) => {
 
     res.status(200).json(productWithStats);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getCustomers = async (req, res) => {
+export const getCustomers = async (req, res, next) => {
   try {
     const customers = await User.find({ role: "user" }).select("-password");
     res.status(200).json(customers);
   } catch {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getTransactions = async (req, res) => {
+export const getTransactions = async (req, res, next) => {
   try {
     // sort should look like this: { "field": "userId", "sort": "desc"}
     const { page = 1, pageSize = 20, sort = null, search = "" } = req.query;
@@ -75,11 +75,11 @@ export const getTransactions = async (req, res) => {
       total,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getGeography = async (req, res) => {
+export const getGeography = async (req, res, next) => {
   try {
     const users = await User.find();
 
@@ -100,6 +100,6 @@ export const getGeography = async (req, res) => {
 
     res.status(200).json(formattedLocations);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    next(error);
   }
 };
