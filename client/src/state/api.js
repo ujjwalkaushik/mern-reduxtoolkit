@@ -13,6 +13,8 @@ export const api = createApi({
     "Admins",
     "Performance",
     "Dashboard",
+    "DownloadStats",
+    "DownloadCSV"
   ],
   endpoints: (build) => ({
     getUser: build.query({
@@ -55,6 +57,11 @@ export const api = createApi({
       query: () => "/general/dashboard",
       providesTags: ["Dashboard"],
     }),
+    downloadCsv: build.query({
+      query: () => "/general/users/stats",
+      responseType :'blob',
+      providesTags: ["DownloadCSV"],
+    })
   }),
 });
 
@@ -68,4 +75,5 @@ export const {
   useGetAdminsQuery,
   useGetUserPerformanceQuery,
   useGetDashboardQuery,
+  useDownloadCsvQuery
 } = api;

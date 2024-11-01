@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import {
@@ -18,13 +18,34 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
-import { useGetDashboardQuery } from "state/api";
+import { useGetDashboardQuery, useDownloadCsvQuery } from "state/api";
 import StatBox from "components/StatBox";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+
   const { data, isLoading } = useGetDashboardQuery();
+
+  const handleDownload = async () => {
+    // Manually trigger the query to get CSV data
+    const response = await fetch('http://localhost:5001/general/users/stats');
+    if (!response.ok) {
+      throw new Error('Failed to fetch CSV');
+    }
+    const blob = await response.blob();
+    
+    // Create a URL for the blob and trigger the download
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url); // Clean up the URL object
+  };
+
 
   const columns = [
     {
@@ -64,6 +85,7 @@ const Dashboard = () => {
 
         <Box>
           <Button
+            onClick={handleDownload}
             sx={{
               backgroundColor: theme.palette.secondary.light,
               color: theme.palette.background.alt,
