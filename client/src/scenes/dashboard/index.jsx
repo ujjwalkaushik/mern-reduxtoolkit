@@ -18,7 +18,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
-import { useGetDashboardQuery, useDownloadCsvQuery } from "state/api";
+import { useGetDashboardQuery, useDownloadCsvMutation  } from "state/api";
 import StatBox from "components/StatBox";
 
 const Dashboard = () => {
@@ -26,24 +26,30 @@ const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
 
   const { data, isLoading } = useGetDashboardQuery();
+  const [downloadCsv, { error }] = useDownloadCsvMutation();
 
-  const handleDownload = async () => {
-    // Manually trigger the query to get CSV data
-    const response = await fetch('http://localhost:5001/general/users/stats');
-    if (!response.ok) {
-      throw new Error('Failed to fetch CSV');
-    }
-    const blob = await response.blob();
+  const handleDownload =  () => {
+
+    /* using rtk-query to download file */
+    downloadCsv();
+
+
+     /* Manually trigger the query to get CSV data */
+    // const response = await fetch('http://localhost:5001/general/users/stats');
+    // if (!response.ok) {
+    //   throw new Error('Failed to fetch CSV');
+    // }
+    // const blob = await response.blob();
     
-    // Create a URL for the blob and trigger the download
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'report.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url); // Clean up the URL object
+    // // Create a URL for the blob and trigger the download
+    // const url = window.URL.createObjectURL(blob);
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', 'report.csv');
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+    // window.URL.revokeObjectURL(url); // Clean up the URL object
   };
 
 
