@@ -14,7 +14,7 @@ export const api = createApi({
     "Performance",
     "Dashboard",
     "DownloadStats",
-    "DownloadCSV"
+    "DownloadCSV",
   ],
   endpoints: (build) => ({
     getUser: build.query({
@@ -57,11 +57,33 @@ export const api = createApi({
       query: () => "/general/dashboard",
       providesTags: ["Dashboard"],
     }),
-    downloadCsv: build.query({
-      query: () => "/general/users/stats",
-      responseType :'blob',
-      providesTags: ["DownloadCSV"],
-    })
+
+    /*You should use rtk-query to download file, since using RTK Query would place that file in the cache - 
+      which means in the user's memory. Which, depending on the file size could even crash the user's browser. 
+      https://github.com/reduxjs/redux-toolkit/issues/1522 */
+
+    /*React Query might be trying to parse the response as JSON by default, which would fail for CSV content.
+    the responseHandler is directly handling the CSV download by creating a blob URL and redirecting the browser to it. 
+    This avoids parsing or managing the response as JSON, */
+
+    // downloadCsv: build.query({   // Not Working
+    //   query: () => "/general/users/stats",
+    //   responseType :'blob',
+    //   providesTags: ["DownloadCSV"],
+    // })
+    downloadCsv: build.mutation({
+      query: () => {
+        return {
+          url: `/general/users/stats`,
+          method: "GET",
+          responseHandler: async (response) =>
+            window.location.assign(
+              window.URL.createObjectURL(await response.blob())
+            ),
+          cache: "no-cache",
+        };
+      },
+    }),
   }),
 });
 
@@ -75,5 +97,5 @@ export const {
   useGetAdminsQuery,
   useGetUserPerformanceQuery,
   useGetDashboardQuery,
-  useDownloadCsvQuery
+  useDownloadCsvMutation,
 } = api;
