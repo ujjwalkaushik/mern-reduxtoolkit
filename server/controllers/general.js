@@ -1,8 +1,10 @@
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 import OverallStat from "../models/OverallStat.js";
+import Image from "../models/Image.js";
 
 import { Parser } from "json2csv";
+import mongoose from "mongoose";
 
 export const downloadUserStats = async (req, res, next) => {
   try {
@@ -81,6 +83,44 @@ export const getDashboardStats = async (req, res, next) => {
       todaysStats,
       transactions,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postImageUpload = async (req, res, next) => {
+  try {
+    const { userId, name, image } = req.body;
+
+    const matches = image.match(/^data:(.+);base64,(.+)$/);
+    if (!matches) {
+      return res.status(400).json({ error: "Invalid image format" });
+    }
+
+    const contentType = matches[1];
+    const data = Buffer.from(matches[2], "base64");
+
+    const newImage = new Image({
+      userId,
+      name,
+      img: { data, contentType },
+    });
+    await newImage.save();
+    res
+      .status(200)
+      .json({ message: "Image uploaded successfully", imageId: newImage._id });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getImage = async (req, res, next) => {
+  try {
+    const image =  await Image.findOne({ userId: new mongoose.Types.ObjectId(req.params.userId) });
+    if (!image) return res.status(404).json({ error: "Image not found" });
+
+    res.contentType(image.img.contentType);
+    res.send(image.img.data);
   } catch (error) {
     next(error);
   }
