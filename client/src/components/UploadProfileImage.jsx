@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 
-const UploadProfileImage = () => {
+const UploadProfileImage = ({ onUploadSuccess }) => {
   const [image, setImage] = useState(null);
   const userId = useSelector((state) => state.global.userId);
 
@@ -23,7 +23,7 @@ const UploadProfileImage = () => {
         body: JSON.stringify({  userId, name: 'profile-pic', image }),
       });
       const data = await response.json();
-      console.log('Upload successful:', data);
+      onUploadSuccess(); // Call the parent handler after a successful upload
     } catch (error) {
       console.error('Upload failed:', error);
     }
