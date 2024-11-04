@@ -100,15 +100,24 @@ export const postImageUpload = async (req, res, next) => {
     const contentType = matches[1];
     const data = Buffer.from(matches[2], "base64");
 
-    const newImage = new Image({
-      userId,
-      name,
-      img: { data, contentType },
+    // Using findOneAndUpdate to check if a document with the userId exists and update it
+    const updatedImage = await Image.findOneAndUpdate(
+      { userId }, // Search condition
+      {
+        userId,
+        name,
+        img: { data, contentType },
+      },
+      {
+        new: true, // Return the updated document
+        upsert: true, // If no document found, create a new one
+      }
+    );
+
+    res.status(200).json({
+      message: "Image uploaded successfully",
+      imageId: updatedImage._id,
     });
-    await newImage.save();
-    res
-      .status(200)
-      .json({ message: "Image uploaded successfully", imageId: newImage._id });
   } catch (error) {
     next(error);
   }
@@ -116,7 +125,9 @@ export const postImageUpload = async (req, res, next) => {
 
 export const getImage = async (req, res, next) => {
   try {
-    const image =  await Image.findOne({ userId: new mongoose.Types.ObjectId(req.params.userId) });
+    const image = await Image.findOne({
+      userId: new mongoose.Types.ObjectId(req.params.userId),
+    });
     if (!image) return res.status(404).json({ error: "Image not found" });
 
     res.contentType(image.img.contentType);
