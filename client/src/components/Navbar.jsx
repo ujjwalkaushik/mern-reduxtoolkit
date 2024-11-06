@@ -10,7 +10,7 @@ import {
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import { setMode } from "state";
-import profileImage from "assets/profile.jpeg";
+import { useProfileImage } from '../../src/context/ProfileImageContext';
 import {
   AppBar,
   Button,
@@ -23,15 +23,22 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const { profileImage } = useProfileImage();
+
+  const handleProfileSetting = () => {
+    navigate("/profile");
+  }
 
   return (
     <AppBar
@@ -69,7 +76,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleProfileSetting}>
             <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
 

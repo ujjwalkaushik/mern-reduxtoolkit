@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import { toast } from 'react-toastify';
 
-const UploadProfileImage = ({ imageExist, onUploadSuccess, onImageSelect }) => {
+const UploadProfileImage = ({ onUploadSuccess, onImageSelect, onImageDelete }) => {
   const [image, setImage] = useState(null);
   const userId = useSelector((state) => state.global.userId);
 
@@ -39,7 +39,7 @@ const UploadProfileImage = ({ imageExist, onUploadSuccess, onImageSelect }) => {
   };
 
   const handleDeleteImage = () => {
-    onImageSelect(null);
+    onImageDelete();
     setImage(null);
   }
 
@@ -58,16 +58,8 @@ const UploadProfileImage = ({ imageExist, onUploadSuccess, onImageSelect }) => {
           />
         </Button>
         )}
-        
-        {/* {image && (
-          <img
-            src={image}
-            alt="Preview"
-            style={{ width: "100px", height: "100px" }}
-          />
-        )} */}
 
-        {(image && imageExist) ? (
+        {(image) ? (
           <>
             <Button variant="contained" disabled={!image} onClick={handleUpload}>
               Save

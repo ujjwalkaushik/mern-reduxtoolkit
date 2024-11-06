@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
 
+import { ProfileImageProvider } from '../src/context/ProfileImageContext';
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,6 +31,7 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
+        <ProfileImageProvider>
           <CssBaseline />
           <ToastContainer
             position="top-right"
@@ -58,6 +61,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
+        </ProfileImageProvider>
         </ThemeProvider>
       </BrowserRouter>
     </div>

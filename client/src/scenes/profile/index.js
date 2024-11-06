@@ -1,57 +1,49 @@
 import React, { useEffect, useState } from "react";
 import UploadProfileImage from "../../components/UploadProfileImage";
 import { useSelector } from "react-redux";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
+import { useProfileImage } from "context/ProfileImageContext";
 
 const Profile = () => {
-  const [imageSrc, setImageSrc] = useState("");
-  const [dbImage, setDbImage] = useState("");
-  const [imageExist, setImageExist] = useState(false)
-  const userId = useSelector((state) => state.global.userId);
+  const { profileImage, fetchProfilesImage } =
+    useProfileImage();
 
-  // Fetch the profile image initially
-  const fetchProfileImage = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:5001/general/image/${userId}`
-      );
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setImageExist(true);
-      setImageSrc(url);
-      setDbImage(url);
-    } catch (err) {
-      console.error("Failed to fetch image", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfileImage();
-  }, []);
+  const [selectedImage, setSelectedImage] = useState(null); // Local state for temporary image
+  const [isModified, setIsModified] = useState(false); // Track if an image is selected
 
   // Handler to be called after successful image upload
-  const handleImageUploadSuccess = () => {
-    fetchProfileImage();
+  const handleImageUploadSuccess = async () => {
+    await fetchProfilesImage();
+    setSelectedImage(null); // Clear local selected image
+    setIsModified(false);
   };
 
   const handleImageSelect = (image) => {
-    if(image) {
-      setImageSrc(image);
-    } else {
-      setImageSrc(dbImage);
-    }
-  }
+    setSelectedImage(image);
+    setIsModified(true);
+  };
 
-  return ( 
+  const handleImageDelete = () => {
+    setSelectedImage(null); // Reset to show original context image
+    setIsModified(false);
+  };
+
+  return (
     <Container maxWidth="sm">
       <h1>Profile Page</h1>
-      {imageSrc ? (
-        <img style={{borderRadius: '50%'}} width={500} height={500} src={imageSrc} alt="Profile" />
-      ) : (
-        <p>Loading image...</p>
-      )}
+      <img
+        style={{ borderRadius: "50%" }}
+        width={500}
+        height={500}
+        src={selectedImage || profileImage}
+        alt="Profile"
+      />
 
-      <UploadProfileImage imageExist={imageExist} onImageSelect={handleImageSelect} onUploadSuccess={handleImageUploadSuccess} />
+      <UploadProfileImage
+        onImageDelete={handleImageDelete}
+        onImageSelect={handleImageSelect}
+        onUploadSuccess={handleImageUploadSuccess}
+      />
     </Container>
   );
 };
