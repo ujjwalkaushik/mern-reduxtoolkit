@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "eslint": "^9.14.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "lint:client": "eslint --fix client/**/*.{js,jsx,ts,tsx}",
+    "lint:server": "eslint --fix server/**/*.{js,ts}",
+    "format:client": "prettier --write client/**/*.{js,jsx,ts,tsx}",
+    "format:server": "prettier --write server/**/*.{js,ts}"
+  },
+  "lint-staged": {
+    "client/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "server/**/*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
