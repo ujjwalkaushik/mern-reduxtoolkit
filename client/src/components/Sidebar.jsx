@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Divider,
@@ -11,7 +11,7 @@ import {
   ListItemText,
   Typography,
   useTheme,
-} from "@mui/material";
+} from '@mui/material';
 import {
   SettingsOutlined,
   ChevronLeft,
@@ -27,67 +27,67 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
-} from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import FlexBetween from "./FlexBetween";
-import { useProfileImage } from '../../src/context/ProfileImageContext';
+} from '@mui/icons-material';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import FlexBetween from './FlexBetween';
+import { useProfileImage } from 'context/ProfileImageContext';
 
 const navItems = [
   {
-    text: "Dashboard",
+    text: 'Dashboard',
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
+    text: 'Client Facing',
     icon: null,
   },
   {
-    text: "Products",
+    text: 'Products',
     icon: <ShoppingCartOutlined />,
   },
   {
-    text: "Customers",
+    text: 'Customers',
     icon: <Groups2Outlined />,
   },
   {
-    text: "Transactions",
+    text: 'Transactions',
     icon: <ReceiptLongOutlined />,
   },
   {
-    text: "Geography",
+    text: 'Geography',
     icon: <PublicOutlined />,
   },
   {
-    text: "Sales",
+    text: 'Sales',
     icon: null,
   },
   {
-    text: "Overview",
+    text: 'Overview',
     icon: <PointOfSaleOutlined />,
   },
   {
-    text: "Daily",
+    text: 'Daily',
     icon: <TodayOutlined />,
   },
   {
-    text: "Monthly",
+    text: 'Monthly',
     icon: <CalendarMonthOutlined />,
   },
   {
-    text: "Breakdown",
+    text: 'Breakdown',
     icon: <PieChartOutlined />,
   },
   {
-    text: "Management",
+    text: 'Management',
     icon: null,
   },
   {
-    text: "Admin",
+    text: 'Admin',
     icon: <AdminPanelSettingsOutlined />,
   },
   {
-    text: "Performance",
+    text: 'Performance',
     icon: <TrendingUpOutlined />,
   },
 ];
@@ -100,7 +100,7 @@ const Sidebar = ({
   isNonMobile,
 }) => {
   const { pathname } = useLocation();
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
   const navigate = useNavigate();
   const theme = useTheme();
   const { profileImage } = useProfileImage();
@@ -108,6 +108,10 @@ const Sidebar = ({
   useEffect(() => {
     setActive(pathname.substring(1));
   }, [pathname]);
+
+  const handleProfileSetting = () => {
+    navigate('/profile');
+  };
 
   return (
     <Box component="nav">
@@ -119,11 +123,11 @@ const Sidebar = ({
           anchor="left"
           sx={{
             width: drawerWidth,
-            "& .MuiDrawer-paper": {
+            '& .MuiDrawer-paper': {
               color: theme.palette.secondary[200],
               backgroundColor: theme.palette.background.alt,
-              boxSixing: "border-box",
-              borderWidth: isNonMobile ? 0 : "2px",
+              boxSixing: 'border-box',
+              borderWidth: isNonMobile ? 0 : '2px',
               width: drawerWidth,
             },
           }}
@@ -147,7 +151,7 @@ const Sidebar = ({
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
                   return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
+                    <Typography key={text} sx={{ m: '2.25rem 0 1rem 3rem' }}>
                       {text}
                     </Typography>
                   );
@@ -165,7 +169,7 @@ const Sidebar = ({
                         backgroundColor:
                           active === lcText
                             ? theme.palette.secondary[300]
-                            : "transparent",
+                            : 'transparent',
                         color:
                           active === lcText
                             ? theme.palette.primary[600]
@@ -174,7 +178,7 @@ const Sidebar = ({
                     >
                       <ListItemIcon
                         sx={{
-                          ml: "2rem",
+                          ml: '2rem',
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
@@ -185,7 +189,7 @@ const Sidebar = ({
                       </ListItemIcon>
                       <ListItemText primary={text} />
                       {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        <ChevronRightOutlined sx={{ ml: 'auto' }} />
                       )}
                     </ListItemButton>
                   </ListItem>
@@ -203,7 +207,7 @@ const Sidebar = ({
                 height="40px"
                 width="40px"
                 borderRadius="50%"
-                sx={{ objectFit: "cover" }}
+                sx={{ objectFit: 'cover' }}
               />
               <Box textAlign="left">
                 <Typography
@@ -221,9 +225,10 @@ const Sidebar = ({
                 </Typography>
               </Box>
               <SettingsOutlined
+                onClick={handleProfileSetting}
                 sx={{
                   color: theme.palette.secondary[300],
-                  fontSize: "25px ",
+                  fontSize: '25px ',
                 }}
               />
             </FlexBetween>
