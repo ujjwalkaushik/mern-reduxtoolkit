@@ -103,7 +103,7 @@ const Sidebar = ({
   const [active, setActive] = useState('');
   const navigate = useNavigate();
   const theme = useTheme();
-  const profileImage = useProfileImage();
+  const { profileImage } = useProfileImage();
 
   useEffect(() => {
     setActive(pathname.substring(1));

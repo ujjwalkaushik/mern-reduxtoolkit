@@ -17,6 +17,7 @@ export default [
   {
     rules: {
       "react/prop-types": "off", // Disable prop-types validation
+      "prefer-destructuring": ["error", { "object": true, "array": false }]
     },
   },
 ];
