@@ -5,6 +5,11 @@ import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
 
+import { ProfileImageProvider } from '../src/context/ProfileImageContext';
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Layout from "scenes/layout";
 import Dashboard from "scenes/dashboard";
 import Products from "scenes/products";
@@ -17,6 +22,7 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
+import Profile from "scenes/profile";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -25,7 +31,19 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
+        <ProfileImageProvider>
           <CssBaseline />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -40,8 +58,10 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/performance" element={<Performance />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
+        </ProfileImageProvider>
         </ThemeProvider>
       </BrowserRouter>
     </div>
