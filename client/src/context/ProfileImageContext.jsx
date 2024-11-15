@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 const ProfileImageContext = createContext();
 
@@ -14,7 +14,9 @@ export const ProfileImageProvider = ({ children }) => {
   // Function to fetch profile image from API
   const fetchProfilesImage = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/general/image/${userId}`);
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/general/image/${userId}`
+      );
       if (response.ok) {
         const blob = await response.blob();
         setProfileImage(URL.createObjectURL(blob));
@@ -25,12 +27,14 @@ export const ProfileImageProvider = ({ children }) => {
   };
 
   // Fetch profile image once when the component mounts
-  useEffect(() => {    
+  useEffect(() => {
     fetchProfilesImage();
   }, []);
 
   return (
-    <ProfileImageContext.Provider value={{ profileImage, setProfileImage, fetchProfilesImage  }}>
+    <ProfileImageContext.Provider
+      value={{ profileImage, setProfileImage, fetchProfilesImage }}
+    >
       {children}
     </ProfileImageContext.Provider>
   );
