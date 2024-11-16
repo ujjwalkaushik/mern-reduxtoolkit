@@ -15,7 +15,7 @@ export const ProfileImageProvider = ({ children }) => {
   const fetchProfilesImage = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/general/image/${userId}`
+        `${process.env.REACT_APP_BASE_URL}general/image/${userId}`
       );
       if (response.ok) {
         const blob = await response.blob();

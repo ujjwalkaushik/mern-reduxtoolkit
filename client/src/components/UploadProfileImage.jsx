@@ -25,7 +25,7 @@ const UploadProfileImage = ({
   const handleUpload = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/general/image-upload`,
+        `${process.env.REACT_APP_BASE_URL}general/image-upload`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
